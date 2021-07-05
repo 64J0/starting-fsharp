@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>starting_fsharp</RootNamespace>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Program.fs" />
+    <Compile Include="Tut-02.fs" />
+    <Compile Include="Tut-03.fs" />
+    <Compile Include="Tut-04.fs" />
+  </ItemGroup>
+</Project>
