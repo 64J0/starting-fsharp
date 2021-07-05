@@ -85,7 +85,7 @@ module Tutorial4
   let getFirstItem' list =
     List.head list
 
-  let x: int = List.head []
+  // let x: int = List.head []
 
   // Recursive function
   let rec printEveryItem = function

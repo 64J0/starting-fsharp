@@ -5,9 +5,10 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Program.fs" />
+    <!-- <Compile Include="Program.fs" />
     <Compile Include="Tut-02.fs" />
     <Compile Include="Tut-03.fs" />
-    <Compile Include="Tut-04.fs" />
+    <Compile Include="Tut-04.fs" /> -->
+    <Compile Include="Tut-05-FizzBuzz.fs" />
   </ItemGroup>
 </Project>
