@@ -21,6 +21,19 @@ Some definitions of this universe of functional programming:
 ```bash
 # must have the dotnet installed
 $ dotnet run
+
+# https://docs.microsoft.com/en-us/nuget/consume-packages/install-use-packages-dotnet-cli
+# add a package to this project:
+$ dotnet add package <PACKAGE_NAME>
+
+# restore the packages
+$ dotnet restore
+
+# build the project
+$ dotnet build
+
+# start the project
+$ dotnet run
 ```
 
 ---
