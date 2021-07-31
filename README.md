@@ -44,3 +44,4 @@ _Thanks Ben Gobeil and Iago Henrique, for sharing his youtube channel with me._
 1. [Getting Started with .NET/F# - How to setup a basic Development Environment [Windows/Mac/Linux]](https://www.youtube.com/watch?v=Ar20aMQxR7I&ab_channel=BenGobeil)
 2. [F# Fundamentals Tutorial | Learn Functional Programming | Step-by-Step Guide](https://www.youtube.com/watch?v=SvOInBxPL30&ab_channel=BenGobeil)
 3. [Writing a Simple Application in F# + Live Refactoring | Basic Functional Software Design Walkthrough](https://www.youtube.com/watch?v=gNARAXJd_tM&ab_channel=BenGobeil)
+4. [Microsoft - Take your first steps with F#](https://docs.microsoft.com/en-us/learn/modules/fsharp-first-steps)
