@@ -8,13 +8,13 @@ open System
 open System.Net
 open HtmlAgilityPack
 
-let isLeafHtmlNode (node: HtmlNode) =
-    (not node.HasChildNodes)
-    && not (String.IsNullOrWhiteSpace(node.InnerHtml))
-
 let fetchHtmlContent (uri: Uri) =
     let httpClient = new Http.HttpClient()
     httpClient.GetStringAsync(uri)
+
+let htmlNodeIsLeaf (node: HtmlNode) =
+    (not node.HasChildNodes)
+    && not (String.IsNullOrWhiteSpace(node.InnerHtml))
 
 let countWords (textNodes: seq<HtmlNode>) =
     Seq.fold 
@@ -39,7 +39,7 @@ let program (url: string) =
             documentNode.SelectSingleNode(@"//*[@id=""main-column""]")
 
         let descendants = singleNode.Descendants()
-        let textNodes = descendants |> Seq.where isLeafHtmlNode
+        let textNodes = descendants |> Seq.where htmlNodeIsLeaf
 
         let quantityOfWords = countWords textNodes
 
