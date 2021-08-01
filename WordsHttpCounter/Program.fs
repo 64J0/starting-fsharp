@@ -5,19 +5,30 @@
 #endif
 
 open System
-open System.Threading.Tasks
 open System.Net
 open HtmlAgilityPack
 
-let filterHtmlNodes (node: HtmlNode) =
+let isLeafHtmlNode (node: HtmlNode) =
     (not node.HasChildNodes)
     && not (String.IsNullOrWhiteSpace(node.InnerHtml))
 
-let makeHttpRequest (url: string) =
+let fetchHtmlContent (uri: Uri) =
+    let httpClient = new Http.HttpClient()
+    httpClient.GetStringAsync(uri)
+
+let countWords (textNodes: seq<HtmlNode>) =
+    Seq.fold 
+        (fun (acc) (node: HtmlNode) -> acc + node.InnerText.Split(" ").Length) 
+        0 // acc initial value
+        textNodes
+
+let printResults url quantityOfWords =
+    printfn "\nUrl: %s \nQuantity of words: %i" url quantityOfWords
+
+let program (url: string) =
     async {
         let uri = Uri(url)
-        let httpClient = new Http.HttpClient()
-        let! rawHtml = httpClient.GetStringAsync(uri) |> Async.AwaitTask
+        let! rawHtml = fetchHtmlContent(uri) |> Async.AwaitTask
         let html = HtmlDocument()
         html.LoadHtml(rawHtml)
 
@@ -28,36 +39,20 @@ let makeHttpRequest (url: string) =
             documentNode.SelectSingleNode(@"//*[@id=""main-column""]")
 
         let descendants = singleNode.Descendants()
-        let textNodes = descendants |> Seq.where filterHtmlNodes
+        let textNodes = descendants |> Seq.where isLeafHtmlNode
 
-        // let textNodesWithInnerText =
-        //     textNodes
-        //     |> Seq.where (fun x -> not (String.IsNullOrEmpty(x.InnerText)))
+        let quantityOfWords = countWords textNodes
 
-        // let fullText =
-        //     String.Join("\n", textNodesWithInnerText)
-
-        let mutable counter = 0
-
-        textNodes
-        |> Seq.iter
-            (fun x ->
-                counter <- counter + (x.InnerText.Split(" ").Length))
-
-        // printfn "fullText: %O" fullText
-        printfn "counter: %O" counter
+        printResults url quantityOfWords
     }
 
 
 let listOfTargetSites =
-    [ "https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/sequences" // 4675
-    ]
+    [ "https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/literals" (* 576 *)
+      "https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/sequences" (* 4675 *) ]
 
-let program =
-    listOfTargetSites
-    |> List.map makeHttpRequest
-    |> Async.Parallel
-    |> Async.RunSynchronously
-    |> ignore
-
-program
+listOfTargetSites
+|> List.map program
+|> Async.Parallel
+|> Async.RunSynchronously
+|> ignore
