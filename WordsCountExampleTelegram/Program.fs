@@ -4,7 +4,12 @@
 
 open HtmlAgilityPack
 
-let document = HtmlWeb().Load("https://github.com");
+let listOfTargets =
+    [ "https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/sequences" // 4007
+    ]
+
+let loadDocument (url: string) = 
+    HtmlWeb().Load(url)
 
 let rec leafNodes (node:HtmlNode) =
     seq {
@@ -13,7 +18,7 @@ let rec leafNodes (node:HtmlNode) =
         else if node.ParentNode.Name <> "script" && node :? HtmlTextNode then
             yield node :?> HtmlTextNode }
 
-let result = 
+let getResult (document: HtmlDocument) = 
     document.DocumentNode |> leafNodes
     |> Seq.map 
         (fun e -> 
@@ -21,4 +26,6 @@ let result =
             |> Array.filter (not << System.String.IsNullOrWhiteSpace))
     |> Seq.sumBy Array.length
 
-printfn "Result: %O" result
+listOfTargets
+|> List.map (loadDocument >> getResult)
+|> List.iter (fun x -> printfn "The result is: %i" x)

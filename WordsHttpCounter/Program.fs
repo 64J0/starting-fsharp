@@ -30,19 +30,18 @@ let makeHttpRequest (url: string) =
         let descendants = singleNode.Descendants()
         let textNodes = descendants |> Seq.where filterHtmlNodes
 
-        let textNodesWithInnerText =
-            textNodes
-            |> Seq.where (fun x -> not (String.IsNullOrEmpty(x.InnerText)))
+        // let textNodesWithInnerText =
+        //     textNodes
+        //     |> Seq.where (fun x -> not (String.IsNullOrEmpty(x.InnerText)))
 
-        let fullText =
-            String.Join("\n", textNodesWithInnerText)
+        // let fullText =
+        //     String.Join("\n", textNodesWithInnerText)
 
         let mutable counter = 0
 
         textNodes
         |> Seq.iter
             (fun x ->
-                printfn "Innertext: %s" x.InnerText
                 counter <- counter + (x.InnerText.Split(" ").Length))
 
         // printfn "fullText: %O" fullText
@@ -50,11 +49,12 @@ let makeHttpRequest (url: string) =
     }
 
 
-let sites =
-    [ "https://docs.microsoft.com/en-us/aspnet/core/fundamentals/startup?view=aspnetcore-5.0" ]
+let listOfTargetSites =
+    [ "https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/sequences" // 4675
+    ]
 
 let program =
-    sites
+    listOfTargetSites
     |> List.map makeHttpRequest
     |> Async.Parallel
     |> Async.RunSynchronously
