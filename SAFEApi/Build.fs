@@ -45,8 +45,8 @@ Target.create "InstallClient" (fun _ -> run npm "install" ".")
 
 Target.create "Run" (fun _ ->
     run dotnet "build" sharedPath
-    [ "server", dotnet "run" serverPath
-      "client", dotnet "fable --run webpack-dev-server" clientPath ]
+    [ "server", dotnet "watch run" serverPath
+      "client", dotnet "watch fable --run webpack-dev-server" clientPath ]
     |> runParallel
 )
 
@@ -70,13 +70,14 @@ let dependencies = [
     //     ==> "Azure"
 
     "Clean"
+        ==> "Format"
         ==> "InstallClient"
         ==> "Run"
-        // ==> "Bundle"
 
     // "InstallClient"
     //     ==> "RunTests"
 ]
 
+// run will point to this function
 [<EntryPoint>]
 let main args = runOrDefault args
