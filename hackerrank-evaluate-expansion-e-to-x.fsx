@@ -17,13 +17,14 @@ let rec fatorial (n: float) =
     else 1. // todo: fix
     
 let calculateExpansion (input: float) =
-    let mutable result = 1.
-    
-    for n in [1. .. 9.] do
-        let leftSide = Math.Pow(input, n) / (fatorial n)
-        result <- result + leftSide
+    let initialState = 1.
 
-    result
+    [1. .. 9.]
+    |> Seq.fold 
+        (fun (state: float) (n: float) ->
+            let rightSide = Math.Pow(input, n) / (fatorial n)
+            state + rightSide)
+        initialState
 
 getInput ()
 |> Seq.tail
